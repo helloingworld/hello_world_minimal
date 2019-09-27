@@ -5,6 +5,8 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
+enum PopupItems { rate, feedback, help }
+
 class _HomeState extends State<Home> {
   bool _isMinimal = true;
 
@@ -14,43 +16,40 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void _handlePopupItem(PopupItems value) {}
+
   @override
   Widget build(BuildContext context) {
-    var _hPadding = (MediaQuery.of(context).size.width - 200) / 2;
+    final _hPadding = (MediaQuery.of(context).size.shortestSide - 200) / 2;
+    final _vPadding = _hPadding / MediaQuery.of(context).size.aspectRatio;
 
     return SafeArea(
       child: Container(
-        // width: 200.0,
-        // color: Colors.red,
-        // padding: _isMinimal ? EdgeInsets.all((MediaQuery.of(context).size.width - 200) / 2) : null,
-
+        color: Colors.black,
         padding: _isMinimal
             ? EdgeInsets.symmetric(
                 horizontal: _hPadding,
-                vertical: _hPadding / MediaQuery.of(context).size.aspectRatio,
+                vertical: _vPadding,
               )
-            : null,
+            : EdgeInsets.zero,
         child: Scaffold(
           appBar: AppBar(
             title: Text('Hello World'),
             actions: <Widget>[
-              // IconButton(
-              //   icon: _isMinimal
-              //       ? const Icon(Icons.fullscreen)
-              //       : const Icon(Icons.fullscreen_exit),
-              //   onPressed: () => setState(() {
-              //     _isMinimal = !_isMinimal;
-              //   }),
-              // ),
-              PopupMenuButton(
-                itemBuilder: (_) => [
-                  PopupMenuItem(
+              PopupMenuButton<PopupItems>(
+                onSelected: _handlePopupItem,
+                itemBuilder: (BuildContext context) =>
+                    <PopupMenuEntry<PopupItems>>[
+                  const PopupMenuItem<PopupItems>(
+                    value: PopupItems.rate,
                     child: Text('Rate app'),
                   ),
-                  PopupMenuItem(
-                    child: Text('Send feedback'),
+                  const PopupMenuItem<PopupItems>(
+                    value: PopupItems.feedback,
+                    child: Text('Feedback'),
                   ),
-                  PopupMenuItem(
+                  const PopupMenuItem<PopupItems>(
+                    value: PopupItems.help,
                     child: Text('Help'),
                   ),
                 ],
@@ -65,6 +64,7 @@ class _HomeState extends State<Home> {
                 ? const Icon(Icons.fullscreen)
                 : const Icon(Icons.fullscreen_exit),
             onPressed: _toggleMinimal,
+            tooltip: 'Toggle minimal',
           ),
         ),
       ),

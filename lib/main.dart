@@ -7,6 +7,7 @@ void main() {
     systemNavigationBarColor: Colors.black,
     statusBarColor: Colors.black,
   ));
+  // SystemChrome.setEnabledSystemUIOverlays([]);
   runApp(HelloWorldApp());
 }
 
