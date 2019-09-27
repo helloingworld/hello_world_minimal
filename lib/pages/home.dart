@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:hello_world_minimal/utils/utils.dart';
 
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
-enum PopupItems { rate, feedback, help }
-
 class _HomeState extends State<Home> {
+  List _popupUrls = [
+    'market://details?id=world.helloing.helloworldminimal',
+    'https://helloing.world/helloworldminimal/feedback/',
+    'https://helloing.world/helloworldminimal/'
+  ];
+
   bool _isMinimal = true;
 
   void _toggleMinimal() {
@@ -16,7 +21,9 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void _handlePopupItem(PopupItems value) {}
+  void _handlePopupItem(int value) {
+    launchURL(_popupUrls[value]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,20 +43,19 @@ class _HomeState extends State<Home> {
           appBar: AppBar(
             title: Text('Hello World'),
             actions: <Widget>[
-              PopupMenuButton<PopupItems>(
+              PopupMenuButton<int>(
                 onSelected: _handlePopupItem,
-                itemBuilder: (BuildContext context) =>
-                    <PopupMenuEntry<PopupItems>>[
-                  const PopupMenuItem<PopupItems>(
-                    value: PopupItems.rate,
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+                  const PopupMenuItem<int>(
+                    value: 0,
                     child: Text('Rate app'),
                   ),
-                  const PopupMenuItem<PopupItems>(
-                    value: PopupItems.feedback,
+                  const PopupMenuItem<int>(
+                    value: 1,
                     child: Text('Feedback'),
                   ),
-                  const PopupMenuItem<PopupItems>(
-                    value: PopupItems.help,
+                  const PopupMenuItem<int>(
+                    value: 2,
                     child: Text('Help'),
                   ),
                 ],
